@@ -129,7 +129,7 @@ app.post('/removeproduct', async (req,res) => {
 //Creating api to get all products
 app.get('/allproducts', async (req,res)=> {
     let products = await Product.find({});
-    console.log("all products fetched");
+    console.log("all products fetched",products.length);
     res.send(products);
 })
 
@@ -206,6 +206,7 @@ app.post('/login', async (req,res)=>{
     }
     else{
         res.json({success:false,errors:"wrong email id"});
+
     }
 })
 
