@@ -24,13 +24,48 @@ const ShopContextProvider = (props) => {
         .then((response)=>response.json())
         .then((data)=>setAll_Product(data))
 
+        if (localStorage.getItem('auth-token')){
+            fetch('http://localhost:4000/getcart',{
+                method:'POST',
+                headers:{
+                    Accept:'application/form-data',
+                    'auth-token':`${localStorage.getItem('auth-token')}`,
+                    'Content-Type':'application/json',
+                },
+                body:"",
+            }).then((response)=>response.json())
+            .then((data)=>setcartItems(data))
+        }
+
     }, [])
 
     const addToCart = (itemId) => {
+        console.log('addToCart function called with itemId:', itemId);
 
         setcartItems((prev)=> ({
             ...prev, [itemId]:prev[itemId]+1
-        }))
+        }));
+        const authToken = localStorage.getItem('auth-token');
+        if (authToken) {
+            console.log('Auth token found:', authToken); // Log the auth token
+            
+            fetch('http://localhost:4000/addc', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/form-data',
+                    'Content-Type': 'application/json',
+                    'auth-token': authToken
+                },
+                body: JSON.stringify({ itemId: itemId })
+            })
+            .then(response => response.json())
+            .then(data => console.log('Response data:', data))
+            .catch(error => console.error('Fetch error:', error));
+        } else {
+            console.error('No auth token found');
+        }
+        
+    
 
 
     }
@@ -39,7 +74,28 @@ const ShopContextProvider = (props) => {
 
         setcartItems((prev)=> ({
             ...prev, [itemId]:prev[itemId]-1
-        }))
+        }));
+        const authToken = localStorage.getItem('auth-token');
+        if (authToken) {
+            console.log('Auth token found:', authToken); // Log the auth token
+            
+            fetch('http://localhost:4000/removec', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/form-data',
+                    'Content-Type': 'application/json',
+                    'auth-token': authToken
+                },
+                body: JSON.stringify({ itemId: itemId })
+            })
+            .then(response => response.json())
+            .then(data => console.log('Response data:', data))
+            .catch(error => console.error('Fetch error:', error));
+        } else {
+            console.error('No auth token found');
+        }
+        
+      
 
 
     }
