@@ -1,19 +1,20 @@
-const port = 4000;
-const express = require("express");
-const app = express();
-const mongoose  = require("mongoose");
-const jwt = require("jsonwebtoken");
-const multer  =require("multer");
-const path =require("path");
-const cors = require("cors");
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import jwt from "jsonwebtoken";
+import multer from "multer";
+import path from "path";
+import cors from "cors";
 
+dotenv.config(); // Load environment variables
+
+const app = express();
+const port = process.env.PORT || 4000;
 
 app.use(express.json());
 app.use(cors());
 
-
-//connecting with database
-mongoose.connect("mongodb+srv://warsameadam:mG7F2Rtt7Lgh@cluster0.6u3eb0k.mongodb.net/e-commerce")
+mongoose.connect(process.env.MONGO_URL);
 
 
 //API CREATION
