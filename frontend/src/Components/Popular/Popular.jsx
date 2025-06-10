@@ -6,10 +6,12 @@ import Item from "../Items/Items"
 
 const Popular = () => {
 
+    const API_URL = process.env.REACT_APP_API_URL || "http://localhost:4000";
+
     const [data_product, setData_Product] = useState([]);
 
     useEffect(()=>{
-        fetch('http://localhost:4000/popularinwomen')
+        fetch(`${API_URL}/popularinwomen`)
         .then((response)=>response.json())
         .then((data)=>setData_Product(data));
     },[]);
